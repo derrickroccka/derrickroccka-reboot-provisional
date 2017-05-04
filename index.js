@@ -21,8 +21,6 @@ const heart = new mojs.Shape({
 });
 
 document.getElementById('button').addEventListener( 'click', function (e) {
-	console.log('e', e);
-	
 	heart
 		.tune({ x: e.pageX, y: e.pageY })
 		.generate()
