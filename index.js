@@ -33,6 +33,41 @@ const heartFriends = new mojs.Burst({
 		delay: 'stagger( rand(50, 100) )'
 	}
 });
+
+const utils = {
+	hasClass: function(el, className){
+		if (el.classList)
+			el.classList.contains(className);
+		else
+			new RegExp('(^| )' + className + '( |$)', 'gi').test(el.className);
+	},
+	addClass: function(el, className){
+		if (el.classList)
+			el.classList.add(className);
+		else
+			el.className += ' ' + className;
+	},
+	removeClass: function(el, className){
+		if (el.classList)
+			el.classList.remove(className);
+		else
+			el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+	}
+};
+const toggleFaces = function(){
+	const happyFace = document.querySelector('.happy');
+	const seriousFace = document.querySelector('.serious');
+	
+	if(utils.hasClass(happyFace, 'hidden')){
+		utils.removeClass(happyFace, 'hidden');
+		utils.addClass(seriousFace, 'hidden');
+	}
+	else{
+		utils.removeClass(seriousFace, 'hidden');
+		utils.addClass(happyFace, 'hidden');
+	}
+};
+
 document.querySelector('.face').addEventListener( 'click', function (e) {
 	heart
 		.tune({ x: e.pageX, y: e.pageY })
