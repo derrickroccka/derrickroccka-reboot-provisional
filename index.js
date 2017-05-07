@@ -11,35 +11,35 @@ mojs.addShape( 'heart', Heart ); // passing name and Bubble class
 /* USE CUSTOM SHAPE */
 // now it is available on mojs.Shape constructor as usual
 const heart = new mojs.Shape({
+	left: 0,
+	top: 0,
 	shape:    'heart', // <--- shape of heart is now available!
 	fill:     {'#e87bae':'none'},
 	stroke:   '#e87bae',
 	scale:    { 0 : 1 },
 	strokeWidth: { 10 : 0 },
 	y:         -20,
-	duration:  800,
-	angle:        { 0: Math.random() * (91 - 15) + 15},
+	duration:  400,
+	angle:        { 0: 15}
 });
 
 const heartFriends = new mojs.Burst({
+	left: 0,
+	top: 0,
 	shape:    'heart', // <--- shape of heart is now available!
 	count: 6,
 	children: {
 		shape:        'heart',
 		stroke:       '#e87bae',
-		duration:     1000,
-		angle:        { 0: (Math.random() * (91 - 15) + 15)},
-		radius:       20,
-		delay: 'stagger( rand(50, 100) )'
+		duration:     500,
+		angle:        { 0:  15} ,
+		radius:       20
 	}
 });
 
 const utils = {
 	hasClass: function(el, className){
-		if (el.classList)
-			el.classList.contains(className);
-		else
-			new RegExp('(^| )' + className + '( |$)', 'gi').test(el.className);
+		return el.classList.contains(className);
 	},
 	addClass: function(el, className){
 		if (el.classList)
@@ -54,29 +54,49 @@ const utils = {
 			el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
 	}
 };
-const toggleFaces = function(){
-	const happyFace = document.querySelector('.happy');
-	const seriousFace = document.querySelector('.serious');
-	
-	if(utils.hasClass(happyFace, 'hidden')){
-		utils.removeClass(happyFace, 'hidden');
-		utils.addClass(seriousFace, 'hidden');
-	}
-	else{
-		utils.removeClass(seriousFace, 'hidden');
-		utils.addClass(happyFace, 'hidden');
+
+const toggleFaces = function(from, switchTo){
+
+	const states = {
+		happy: document.querySelector('.happy'),
+		serious: document.querySelector('.serious')
+	};
+	if(utils.hasClass(states[switchTo], 'hidden')){
+		utils.removeClass(states[switchTo], 'hidden');
+		utils.addClass(states[from], 'hidden');
 	}
 };
 
-document.querySelector('.face').addEventListener( 'click', function (e) {
-	heart
-		.tune({ x: e.pageX, y: e.pageY })
-		.generate()
-		.replay();
-	heartFriends
-		.tune({ x: e.pageX, y: e.pageY })
-		.generate()
-		.replay();
+
+Array.from(document.querySelectorAll('.face img')).forEach(function(element) {
+	element.addEventListener('mousedown', function (e) {
+		toggleFaces('serious','happy');
+		heart
+			.tune({ x: e.pageX, y: e.pageY })
+			.generate()
+			.replay();
+		heartFriends
+			.tune({ x: e.pageX, y: e.pageY })
+			.generate()
+			.replay();
 	
+	});
+	element.addEventListener('mouseup', function (e) {
+		toggleFaces('happy','serious');
+	});
 });
+
+
+// document.addEventListener('click', function (e) {
+//
+// // 	toggleFaces();
+// 	heart
+// 		.tune({ x: e.pageX, y: e.pageY })
+// 		.generate()
+// 		.replay();
+// 	heartFriends
+// 		.tune({ x: e.pageX, y: e.pageY })
+// 		.generate()
+// 		.replay();
+// });
 
