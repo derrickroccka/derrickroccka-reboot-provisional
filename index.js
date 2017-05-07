@@ -54,7 +54,8 @@ const utils = {
 			el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
 	}
 };
-
+//TODO: MAKE BURST FIRE WITHOUT DELAY
+//TODO: TOGGLE FACES ON MOUSE UP/DOWN
 const toggleFaces = function(from, switchTo){
 
 	const states = {
